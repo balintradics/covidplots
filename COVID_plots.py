@@ -7,6 +7,8 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib
+import platform
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from urllib.error import HTTPError
@@ -178,6 +180,8 @@ def plot_data(country, provinces):
         ax[r][k].xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
         ax[r][k].xaxis.set_minor_locator(mdates.WeekdayLocator())
         ax[r][k].legend()
+        
+    plt.show()
         
 def print_provinces(country, ntail = 55):
     print("Guessing provinces from tail...")
