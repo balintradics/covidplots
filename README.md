@@ -33,3 +33,5 @@ local `data` folder
 Note: Sometimes Johns Hopkins updates the github csv files retrospectively. In this case
 just delete all files from the automatically created `data` subfolder and the code will 
 redownload them fresh.
+
+![What is this](covidplots.jpg)
