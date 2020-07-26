@@ -19,6 +19,8 @@ plot_data(country = country, provinces = provinces)
 country = "US"
 provinces = ["New York", "Florida", "Texas", "California", "Washington"]
 plot_data(country = country, provinces = provinces)
+
+print_provinces("Germany")
 ```
 
 * Run `makeplots_auto.py` with python3:
