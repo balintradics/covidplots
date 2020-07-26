@@ -17,6 +17,15 @@ import math
 plt.style.use('ggplot')
 
 def get_day(day: pd.Timestamp):
+    # Create automatic 'data' folder
+    path = "./data"
+    if not os.path.isdir(path):
+        try:
+            os.mkdir(path)
+        except OSError:
+            print ("Creation of the directory %s failed" % path)
+        else:
+            print ("Successfully created the directory %s " % path)
 
     # Read in a datafile from GitHub
     try:
