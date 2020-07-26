@@ -27,23 +27,23 @@ def get_day(day: pd.Timestamp):
         else:
             print ("Successfully created the directory %s " % path)
 
-    # Read in a datafile from GitHub
-    try:
-        if not os.path.isfile("./data/"f"{day:%m-%d-%Y}.csv"):
-            print("Data not there yet, attempting to get from Johns Hopkins: ", "./data/"f"{day:%m-%d-%Y}.csv")
-            table = pd.read_csv(
-                "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/"
-                "master/csse_covid_19_data/csse_covid_19_daily_reports/"
-                f"{day:%m-%d-%Y}.csv",
+
+    if not os.path.isfile("./data/"f"{day:%m-%d-%Y}.csv"):
+        print("Data not there yet, attempting to get from Johns Hopkins: ", "./data/"f"{day:%m-%d-%Y}.csv")
+        # Read in a datafile from GitHub
+        try:        
+            url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"f"{day:%m-%d-%Y}.csv"
+            table = pd.read_csv(url,
                 )
             table.to_csv("./data/"f"{day:%m-%d-%Y}.csv")
-        else:
-            #print("Found saved file", "./data/"f"{day:%m-%d-%Y}.csv")
-            table = pd.read_csv( "./data/"f"{day:%m-%d-%Y}.csv")
+        except Exception as e:
+            #print("Caught error \"{error}\" at {url}".format(error=e, url=url))
+            return pd.DataFrame()
+
+    else:
+        #print("Found saved file", "./data/"f"{day:%m-%d-%Y}.csv")
+        table = pd.read_csv( "./data/"f"{day:%m-%d-%Y}.csv")
             
-    except HTTPError:
-        return pd.DataFrame()
-    
     # Cleanup - sadly, the format has changed a bit over time - we can normalize that here
     table.columns = [
         f.replace("/", "_")
