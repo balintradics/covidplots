@@ -180,7 +180,7 @@ def plot_data(country, provinces):
         ax[r][k].xaxis.set_minor_locator(mdates.WeekdayLocator())
         ax[r][k].legend()
         
-    #plt.show()
+    plt.show()
         
 def print_provinces(country, ntail = 55):
     print("Guessing provinces from tail...")
