@@ -1,4 +1,4 @@
-# Make plots of COVID-19 latest data from Johns Hopkins database
+# Make time series plots of COVID-19 latest data from Johns Hopkins database
 
 To use:
 
@@ -8,6 +8,8 @@ To use:
 ```
 $ python makeplots_auto.py
 ```
+* When rerunning them next time, the code will read the data from the
+local `data` folder
 
 Note: Sometimes Johns Hopkins updates the github csv files retrospectively. In this case
 just delete all files from the automatically created `data` subfolder and the code will 
