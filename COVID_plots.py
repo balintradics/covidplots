@@ -93,7 +93,7 @@ def get_all_days(end_day = None):
     day_gen = (get_day(day) for day in date_range)
           
     # Make a big dataframe, NaN is 0
-    df = pd.concat(day_gen).fillna(0).astype(int)
+    df = pd.concat(day_gen, sort=False).fillna(0).astype(int)
     
     
     # Remove a few duplicate keys
