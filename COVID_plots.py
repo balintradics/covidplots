@@ -119,7 +119,7 @@ def get_all_days(end_day = None):
 
 def plot_all():
     startday = "2020-01-22"
-    endday ="2020-08-01"
+    endday = pd.Timestamp.now().normalize()
     dcountry = df.groupby(level="Last_Update").sum()
     fig, ax = plt.subplots(figsize=(7,7))
     ax.bar(dcountry.ΔConfirmed.index.values, dcountry.ΔConfirmed.values, label="Data", color='blue')
@@ -142,7 +142,7 @@ def plot_data(country, provinces):
 
     # plot country data
     startday = "2020-01-22"
-    endday ="2020-08-01"
+    endday = pd.Timestamp.now().normalize()
     dcountry_all_states = dcountry.groupby(level="Last_Update").sum()
     dcountry_all_states.ΔConfirmed.rolling(7, center=True).mean().plot(ax = ax[0][0], logy=False, style='-', label="Rolling mean");
     ax[0][0].bar(dcountry_all_states.ΔConfirmed.index.values, dcountry_all_states.ΔConfirmed.values, label="Data", color='blue')
@@ -157,7 +157,6 @@ def plot_data(country, provinces):
 
     # plot province data
     startday = "2020-06-01"
-    endday ="2020-08-01"
     dby_state = dcountry.groupby(level=("Last_Update", "Province_State")).sum()
     count_cells = 0
     for j in range(len(provinces)):
@@ -181,7 +180,7 @@ def plot_data(country, provinces):
         ax[r][k].xaxis.set_minor_locator(mdates.WeekdayLocator())
         ax[r][k].legend()
         
-    plt.show()
+    #plt.show()
         
 def print_provinces(country, ntail = 55):
     print("Guessing provinces from tail...")
