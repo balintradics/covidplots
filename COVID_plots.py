@@ -26,24 +26,26 @@ def get_day(day: pd.Timestamp):
             print ("Creation of the directory %s failed" % path)
         else:
             print ("Successfully created the directory %s " % path)
+    
 
-
-    if not os.path.isfile("./data/"f"{day:%m-%d-%Y}.csv"):
-        print("Data not there yet, attempting to get from Johns Hopkins: ", "./data/"f"{day:%m-%d-%Y}.csv")
-        # Read in a datafile from GitHub
-        try:        
-            url = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_daily_reports/"f"{day:%m-%d-%Y}.csv"
-            table = pd.read_csv(url,
+    # Read in a datafile from GitHub
+    try:
+        if not os.path.isfile("./data/"f"{day:%m-%d-%Y}.csv"):
+            print("Data not there yet, attempting to get from Johns Hopkins: ", "./data/"f"{day:%m-%d-%Y}.csv")
+            table = pd.read_csv(
+                "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/"
+                "master/csse_covid_19_data/csse_covid_19_daily_reports/"
+                f"{day:%m-%d-%Y}.csv",
                 )
             table.to_csv("./data/"f"{day:%m-%d-%Y}.csv")
-        except Exception as e:
-            #print("Caught error \"{error}\" at {url}".format(error=e, url=url))
-            return pd.DataFrame()
-
-    else:
-        #print("Found saved file", "./data/"f"{day:%m-%d-%Y}.csv")
-        table = pd.read_csv( "./data/"f"{day:%m-%d-%Y}.csv")
+        else:
+            #print("Found saved file", "./data/"f"{day:%m-%d-%Y}.csv")
+            table = pd.read_csv( "./data/"f"{day:%m-%d-%Y}.csv")
             
+    except Exception as e:
+        #print("Caught error \"{error}\" at {url}".format(error=e, url=url))
+        return pd.DataFrame()
+    
     # Cleanup - sadly, the format has changed a bit over time - we can normalize that here
     table.columns = [
         f.replace("/", "_")
@@ -86,14 +88,14 @@ def get_all_days(end_day = None):
         end_day = pd.Timestamp.now().normalize()
 
     # Make a list of all dates
-    date_range = pd.date_range("2020-01-22", end_day)
+    date_range = pd.date_range("2021-01-01", end_day)
     
     
     # Create a generator that returns each day's dataframe
     day_gen = (get_day(day) for day in date_range)
           
     # Make a big dataframe, NaN is 0
-    df = pd.concat(day_gen, sort=False).fillna(0).astype(int)
+    df = pd.concat(day_gen).fillna(0)
     
     
     # Remove a few duplicate keys
@@ -127,7 +129,7 @@ def get_all_days(end_day = None):
     return df
 
 def plot_all():
-    startday = "2020-01-22"
+    startday = "2021-01-01"
     endday = pd.Timestamp.now().normalize()
     dcountry = df.groupby(level="Last_Update").sum()
     fig, ax = plt.subplots(figsize=(7,7))
@@ -150,7 +152,7 @@ def plot_data(country, provinces):
     dcountry = df.xs(country, level="Country_Region")
 
     # plot country data
-    startday = "2020-01-22"
+    startday = "2021-01-01"
     endday = pd.Timestamp.now().normalize()
     dcountry_all_states = dcountry.groupby(level="Last_Update").sum()
     dcountry_all_states.ΔConfirmed.rolling(7, center=True).mean().plot(ax = ax[0][0], logy=False, style='-', label="Rolling mean");
@@ -165,7 +167,7 @@ def plot_data(country, provinces):
     ax[0][0].legend()
 
     # plot province data
-    startday = "2020-06-01"
+    startday = "2021-01-01"
     dby_state = dcountry.groupby(level=("Last_Update", "Province_State")).sum()
     count_cells = 0
     for j in range(len(provinces)):
@@ -189,7 +191,7 @@ def plot_data(country, provinces):
         ax[r][k].xaxis.set_minor_locator(mdates.WeekdayLocator())
         ax[r][k].legend()
         
-    plt.show()
+    #plt.show()
         
 def print_provinces(country, ntail = 55):
     print("Guessing provinces from tail...")
