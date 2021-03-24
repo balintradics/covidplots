@@ -88,7 +88,7 @@ def get_all_days(end_day = None):
         end_day = pd.Timestamp.now().normalize()
 
     # Make a list of all dates
-    date_range = pd.date_range("2021-01-01", end_day)
+    date_range = pd.date_range("2021-02-01", end_day)
     
     
     # Create a generator that returns each day's dataframe
@@ -129,7 +129,7 @@ def get_all_days(end_day = None):
     return df
 
 def plot_all():
-    startday = "2021-01-01"
+    startday = "2021-02-01"
     endday = pd.Timestamp.now().normalize()
     dcountry = df.groupby(level="Last_Update").sum()
     fig, ax = plt.subplots(figsize=(7,7))
@@ -152,7 +152,7 @@ def plot_data(country, provinces):
     dcountry = df.xs(country, level="Country_Region")
 
     # plot country data
-    startday = "2021-01-01"
+    startday = "2021-02-01"
     endday = pd.Timestamp.now().normalize()
     dcountry_all_states = dcountry.groupby(level="Last_Update").sum()
     dcountry_all_states.ΔConfirmed.rolling(7, center=True).mean().plot(ax = ax[0][0], logy=False, style='-', label="Rolling mean");
@@ -167,7 +167,7 @@ def plot_data(country, provinces):
     ax[0][0].legend()
 
     # plot province data
-    startday = "2021-01-01"
+    startday = "2021-02-01"
     dby_state = dcountry.groupby(level=("Last_Update", "Province_State")).sum()
     count_cells = 0
     for j in range(len(provinces)):
